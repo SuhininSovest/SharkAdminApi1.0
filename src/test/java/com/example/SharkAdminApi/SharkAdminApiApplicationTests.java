@@ -8,7 +8,7 @@ class SharkAdminApiApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println("test11");
+		System.out.println("test1");
 	}
 
 }
