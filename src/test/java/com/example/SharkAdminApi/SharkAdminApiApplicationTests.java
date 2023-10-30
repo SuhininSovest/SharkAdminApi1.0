@@ -6,9 +6,4 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SharkAdminApiApplicationTests {
 
-	@Test
-	void contextLoads() {
-		System.out.println("test1");
-	}
-
 }
