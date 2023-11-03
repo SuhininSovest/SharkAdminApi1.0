@@ -1,17 +1,18 @@
 package com.example.SharkAdminApi.entity;
 
-import jakarta.persistence.*;
+import lombok.Data;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
-@Table(name = "domain")
 public class Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long domainId;
     private String nameDomain;
-
-    @OneToMany(mappedBy = "domain")
-    private List<GroupUser> groupList;
+    @OneToMany
+    @JoinColumn(name = "GroupUser")
+    private List<GroupUser> groupUserList;
 }
