@@ -1,4 +1,4 @@
-package com.example.SharkAdminApi.entity;
+package com.example.SharkAdminApi.model;
 
 import lombok.Data;
 
@@ -10,7 +10,8 @@ import java.util.List;
 public class GroupUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long groupUserId;
+    private Long groupUserId;
+    private String groupUserName;
 
     @ManyToMany
     @JoinTable(name = "group_user_user",

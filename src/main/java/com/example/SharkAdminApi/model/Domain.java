@@ -1,4 +1,4 @@
-package com.example.SharkAdminApi.entity;
+package com.example.SharkAdminApi.model;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.List;
 public class Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long domainId;
+    private Long domainId;
     private String nameDomain;
     @OneToMany
     @JoinColumn(name = "GroupUser")

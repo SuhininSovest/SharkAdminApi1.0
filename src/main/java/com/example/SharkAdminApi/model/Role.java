@@ -1,4 +1,4 @@
-package com.example.SharkAdminApi.entity;
+package com.example.SharkAdminApi.model;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.List;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long roleId;
+    private Long roleId;
     private String roleName;
 
     @ManyToMany

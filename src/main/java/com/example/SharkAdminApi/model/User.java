@@ -1,9 +1,8 @@
-package com.example.SharkAdminApi.entity;
+package com.example.SharkAdminApi.model;
 
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -12,7 +11,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userId;
+    private Long userId;
     @Column(name="firstName")
     private String firstName;
     @Column(name="lastName")
