@@ -1,20 +1,27 @@
 package com.example.SharkAdminApi.model;
 
+import lombok.Builder;
 import lombok.Data;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
 @Entity
+@Builder
+@Indexed
 @Table(name = "table_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     @Column(name="firstName")
+    @Field
     private String firstName;
     @Column(name="lastName")
+    @Field
     private String lastName;
     @Column(name="surname")
     private String surname;
@@ -33,7 +40,7 @@ public class User {
     @Column(name="phonePersonal")
     private String phonePersonal;
     @Column(name="bloking")
-    private boolean bloking;
+    private boolean bloking = false;
 
     @ManyToMany(mappedBy = "users")
     private List<GroupUser> groupUsers;

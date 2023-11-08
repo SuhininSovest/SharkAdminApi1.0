@@ -43,7 +43,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-orm</artifactId>
+			<version>5.11.12.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.alibaba.lindorm/lucene-core -->
+		<dependency>
+			<groupId>com.alibaba.lindorm</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>8.10.2</version>
+		</dependency>
 
 	</dependencies>
 
