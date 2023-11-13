@@ -1,8 +1,8 @@
 package com.example.SharkAdminApi.controller;
 
 import com.example.SharkAdminApi.dto.UserDTO;
-import com.example.SharkAdminApi.model.Domain;
 import com.example.SharkAdminApi.model.User;
+import com.example.SharkAdminApi.repository.UserRepository;
 import com.example.SharkAdminApi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,36 +17,38 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     //Get List with User
-    @GetMapping("/getUsers")
+    @GetMapping("/getAll")
     List<User> all() {
-        return userService.readUsersAll();
+        return userRepository.findAll();
     }
     //Create user
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody UserDTO dto) {
         return new ResponseEntity<>(userService.createUser(dto), HttpStatus.CREATED);
     }
     //update user by id
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void updateUser(@RequestBody User user) {
         userService.updateUser(user);
     }
     //get User by id
-    @GetMapping("/{id}")
+    @GetMapping("/get/{userId}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Optional<User> getUser(@PathVariable Long id) {
-        return userService.readUserById(id);
+    public Optional<User> getUser(@PathVariable Long userId) {
+        return userService.readUserById(userId);
     }
     //Delete user by id
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -1,23 +1,22 @@
 package com.example.SharkAdminApi.controller;
 
+import com.example.SharkAdminApi.dto.DomainDTO;
 import com.example.SharkAdminApi.model.Domain;
 import com.example.SharkAdminApi.repository.DomainRepository;
 import com.example.SharkAdminApi.service.DomainService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@AllArgsConstructor
 public class DomainController {
     private final DomainRepository domainRepository;
     DomainService domainService;
-
-    public DomainController(DomainRepository domainRepository) {
-        this.domainRepository = domainRepository;
-    }
-
 
     //Get List with Domains
     @GetMapping("/getDomains")
@@ -34,8 +33,8 @@ public class DomainController {
 
     //Create domain
     @PostMapping("/domain/create")
-    public Domain createDomain(@RequestBody Domain newDomain) {
-        return domainRepository.save(newDomain);
+    public void createDomain(@RequestBody DomainDTO dto) {
+        new ResponseEntity<>(domainService.create(dto), HttpStatus.CREATED);
     }
 
     //delete domain
@@ -43,6 +42,4 @@ public class DomainController {
     void deleteDomain(@PathVariable Long id) {
         domainRepository.deleteById(id);
     }
-
-
 }

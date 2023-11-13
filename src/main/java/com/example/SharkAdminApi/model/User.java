@@ -1,7 +1,9 @@
 package com.example.SharkAdminApi.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @Builder
 @Indexed
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "table_user")
 public class User {
     @Id

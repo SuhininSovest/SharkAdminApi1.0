@@ -27,23 +27,28 @@ public class UserService {
         return userRepository.findAll();
     }
     //get user by id
-    public Optional<User> readUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> readUserById(Long userId) {
+        return userRepository.findById(userId);
     }
     //create user
     @Transactional
     public User createUser(UserDTO userDTO) {
+        // Создание полного имени из переданных данных
+        String fullName = String.format("%s %s %s", userDTO.getFirstName(), userDTO.getLastName(), userDTO.getSurname());
+
         return userRepository.save(User.builder()
-                    .firstName(userDTO.getFirstName())
-                    .lastName(userDTO.getLastName())
-                    .surname(userDTO.getSurname())
-                    .fullName(userDTO.getFullName())
-                    .fullNameForVideoMeeting(userDTO.getFullNameForVideoMeeting())
-                    .employeePosition(userDTO.getEmployeePosition())
-                    .department(userDTO.getDepartment())
-                    .mail(userDTO.getMail())
-                    .phoneWork(userDTO.getPhoneWork())
-                    .phonePersonal(userDTO.getPhonePersonal())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .surname(userDTO.getSurname())
+                // Применение созданного полного имени
+                .fullName(fullName)
+                // Применение полного имени для видеособрания из полного имени
+                .fullNameForVideoMeeting(fullName)
+                .employeePosition(userDTO.getEmployeePosition())
+                .department(userDTO.getDepartment())
+                .mail(userDTO.getMail())
+                .phoneWork(userDTO.getPhoneWork())
+                .phonePersonal(userDTO.getPhonePersonal())
                 .build());
     }
     //update user
