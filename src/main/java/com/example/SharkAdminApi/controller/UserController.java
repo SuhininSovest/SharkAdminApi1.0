@@ -17,18 +17,16 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     //Get List with User
     @GetMapping("/getAll")
     List<User> all() {
-        return userRepository.findAll();
+        return userService.readUsersAll();
     }
     //Create user
     @PostMapping("/create")
@@ -37,9 +35,9 @@ public class UserController {
     }
     //update user by id
     @PutMapping("/update/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void updateUser(@RequestBody User user) {
-        userService.updateUser(user);
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
+        User updatedUser = userService.updateUser(userDTO, id);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
     //get User by id
     @GetMapping("/get/{userId}")

@@ -1,14 +1,14 @@
 package com.example.SharkAdminApi.service;
 
 import com.example.SharkAdminApi.dto.UserDTO;
-import com.example.SharkAdminApi.model.Domain;
+
 import com.example.SharkAdminApi.model.User;
 import com.example.SharkAdminApi.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +53,21 @@ public class UserService {
     }
     //update user
     @Transactional
-    public User updateUser(User user) {
+    public User updateUser(UserDTO userDTO, Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setSurname(userDTO.getSurname());
+        user.setFullName(String.format("%s %s %s", userDTO.getFirstName(), userDTO.getLastName(), userDTO.getSurname()));
+        user.setFullNameForVideoMeeting(user.getFullName());
+        user.setEmployeePosition(userDTO.getEmployeePosition());
+        user.setDepartment(userDTO.getDepartment());
+        user.setMail(userDTO.getMail());
+        user.setPhoneWork(userDTO.getPhoneWork());
+        user.setPhonePersonal(userDTO.getPhonePersonal());
+
         return userRepository.save(user);
     }
     //delete user
@@ -61,32 +75,5 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-//    @Transactional
-//    private void fillUserFromDto(User user, UserDTO userDTO) {
-//        user.setFirstName(userDTO.getFirstName());
-//        user.setLastName(userDTO.getLastName());
-//        user.setSurname(userDTO.getSurname());
-//        user.setFullName(userDTO.getFullName());
-//        user.setFullNameForVideoMeeting(userDTO.getFullNameForVideoMeeting());
-//        user.setEmployeePosition(userDTO.getEmployeePosition());
-//        user.setDepartment(userDTO.getDepartment());
-//        user.setMail(userDTO.getMail());
-//        user.setPhoneWork(userDTO.getPhoneWork());
-//        user.setPhonePersonal(userDTO.getPhonePersonal());
-//    }
-//    @Transactional
-//    private UserDTO convertToUserDTO(User user) {
-//        UserDTO userDTO = new UserDTO();
-//        userDTO.setFirstName(user.getFirstName());
-//        userDTO.setLastName(user.getLastName());
-//        userDTO.setSurname(user.getSurname());
-//        userDTO.setFullName(user.getFullName());
-//        userDTO.setFullNameForVideoMeeting(user.getFullNameForVideoMeeting());
-//        userDTO.setEmployeePosition(user.getEmployeePosition());
-//        userDTO.setDepartment(user.getDepartment());
-//        userDTO.setMail(user.getMail());
-//        userDTO.setPhoneWork(user.getPhoneWork());
-//        userDTO.setPhonePersonal(user.getPhonePersonal());
-//        return userDTO;
-//    }
+
 }
