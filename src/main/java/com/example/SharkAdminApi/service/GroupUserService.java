@@ -30,9 +30,4 @@ public class GroupUserService {
         groupUserRepisitory.save(groupUser);
     }
 
-//    private GroupUserDTO convertToDto(GroupUser groupUser) {
-//        GroupUserDTO groupUserDTO = new GroupUserDTO();
-//        groupUserDTO.setGroupUserName(groupUser.getGroupUserName());
-//        return groupUserDTO;
-//    }
 }

@@ -4,6 +4,7 @@ import com.example.SharkAdminApi.dto.UserDTO;
 
 import com.example.SharkAdminApi.model.User;
 import com.example.SharkAdminApi.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +15,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
     //Get all users
     public List<User> readUsersAll() {
         return userRepository.findAll();

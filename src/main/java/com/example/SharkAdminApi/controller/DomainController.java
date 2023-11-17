@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/api/domains")
 public class DomainController {
     private final DomainRepository domainRepository;
     DomainService domainService;
