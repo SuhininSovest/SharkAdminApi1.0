@@ -2,9 +2,8 @@ package com.example.SharkAdminApi.controller;
 
 import com.example.SharkAdminApi.dto.UserDTO;
 import com.example.SharkAdminApi.model.User;
-import com.example.SharkAdminApi.repository.UserRepository;
 import com.example.SharkAdminApi.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,30 +12,27 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     //Get List with User
-    @GetMapping("/getAll")
-    List<User> all() {
+    @GetMapping("/all")
+    List<User> getAllUsers() {
         return userService.readUsersAll();
     }
     //Create user
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody UserDTO dto) {
-        return new ResponseEntity<>(userService.createUser(dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.create(dto), HttpStatus.CREATED);
     }
     //update user by id
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
-        User updatedUser = userService.updateUser(userDTO, id);
+        User updatedUser = userService.update(userDTO, id);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
     //get User by id
@@ -48,7 +44,7 @@ public class UserController {
     //Delete user by id
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+        userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

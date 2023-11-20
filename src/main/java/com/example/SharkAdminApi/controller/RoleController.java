@@ -3,38 +3,46 @@ package com.example.SharkAdminApi.controller;
 import com.example.SharkAdminApi.dto.RoleDTO;
 import com.example.SharkAdminApi.model.Role;
 import com.example.SharkAdminApi.service.RoleService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/roles")
 public class RoleController {
 
     private final RoleService roleService;
 
-    @Autowired
-    public RoleController(RoleService roleService) {
-        this.roleService = roleService;
-    }
-
-    @GetMapping
+    @GetMapping("/all")
     public List<Role> getAllRoles() {
-        return roleService.getAllRoles();
+        return roleService.readRoleAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Optional<Role> getRole(@PathVariable Long id) {
-        return roleService.getRole(id);
+        return roleService.readUserById(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Role> createRole(@RequestBody Role role) {
         return new ResponseEntity<>(roleService.createRole(role), HttpStatus.CREATED);
     }
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable Long id){
+        roleService.delete(id);
+    }
+    @Transactional
+    @PutMapping("/update")
+    public void updateRole(@PathVariable RoleDTO roleDTO, Long id) {
+        roleService.update(roleDTO, id);
+    }
+
 }

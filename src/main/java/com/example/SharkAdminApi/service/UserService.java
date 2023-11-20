@@ -30,7 +30,7 @@ public class UserService {
     }
     //create user
     @Transactional
-    public User createUser(UserDTO userDTO) {
+    public User create(UserDTO userDTO) {
         // Создание полного имени из переданных данных
         String fullName = String.format("%s %s %s", userDTO.getFirstName(), userDTO.getLastName(), userDTO.getSurname());
 
@@ -51,7 +51,7 @@ public class UserService {
     }
     //update user
     @Transactional
-    public User updateUser(UserDTO userDTO, Long id) {
+    public User update(UserDTO userDTO, Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
 
@@ -70,7 +70,7 @@ public class UserService {
     }
     //delete user
     @Transactional
-    public void deleteUser(Long id) {
+    public void delete(Long id) {
         userRepository.deleteById(id);
     }
 

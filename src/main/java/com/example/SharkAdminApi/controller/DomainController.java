@@ -2,11 +2,11 @@ package com.example.SharkAdminApi.controller;
 
 import com.example.SharkAdminApi.dto.DomainDTO;
 import com.example.SharkAdminApi.model.Domain;
-import com.example.SharkAdminApi.repository.DomainRepository;
 import com.example.SharkAdminApi.service.DomainService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,31 +16,35 @@ import java.util.Optional;
 @AllArgsConstructor
 @RequestMapping("/api/domains")
 public class DomainController {
-    private final DomainRepository domainRepository;
-    DomainService domainService;
+    private final DomainService domainService;
 
     //Get List with Domains
-    @GetMapping("/getDomains")
+    @GetMapping("/get/all")
     List<Domain> all() {
-        return domainRepository.findAll();
+        return domainService.readDomainAll();
     }
 
     //Get one domain from list
-    @GetMapping("/getDomain/{domainId}")
+    @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Optional<Domain> readById(@PathVariable Long domainId) {
-        return domainService.readDomainById(domainId);
+    public Optional<Domain> readById(@PathVariable Long id) {
+        return domainService.readDomainById(id);
     }
 
     //Create domain
-    @PostMapping("/domain/create")
+    @PostMapping("/create")
     public void createDomain(@RequestBody DomainDTO dto) {
         new ResponseEntity<>(domainService.create(dto), HttpStatus.CREATED);
     }
+    @PutMapping("/update")
+    public void updateDomain(@PathVariable DomainDTO domainDTO, @PathVariable Long id) {
+        domainService.update(domainDTO, id);
+    }
 
     //delete domain
-    @DeleteMapping("/domain/delete/{id}")
+    @Transactional
+    @DeleteMapping("/delete/{id}")
     void deleteDomain(@PathVariable Long id) {
-        domainRepository.deleteById(id);
+        domainService.delete(id);
     }
 }
