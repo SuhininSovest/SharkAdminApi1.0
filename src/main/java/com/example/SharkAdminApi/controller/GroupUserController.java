@@ -4,8 +4,6 @@ import com.example.SharkAdminApi.dto.GroupUserDTO;
 import com.example.SharkAdminApi.model.GroupUser;
 import com.example.SharkAdminApi.service.GroupUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +17,7 @@ public class GroupUserController {
 
     private final GroupUserService groupUserService;
 
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     public List<GroupUser> all() {
         return groupUserService.readAllGroupUsers();
     }
@@ -37,9 +35,9 @@ public class GroupUserController {
     public void deleteGroupUser(@PathVariable Long id) {
         groupUserService.delete(id);
     }
-    @Transactional
+
     @PutMapping("/update/{id}")
-    public void updateGroupUser(@PathVariable GroupUserDTO groupUserDTO, Long id){
+    public void updateGroupUser(@RequestBody GroupUserDTO groupUserDTO, @PathVariable Long id){
         groupUserService.update(groupUserDTO, id);
     }
 }

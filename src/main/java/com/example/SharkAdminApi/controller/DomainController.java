@@ -36,8 +36,8 @@ public class DomainController {
     public void createDomain(@RequestBody DomainDTO dto) {
         new ResponseEntity<>(domainService.create(dto), HttpStatus.CREATED);
     }
-    @PutMapping("/update")
-    public void updateDomain(@PathVariable DomainDTO domainDTO, @PathVariable Long id) {
+    @PutMapping("/update/{id}")
+    public void updateDomain(@RequestBody DomainDTO domainDTO, @PathVariable Long id) {
         domainService.update(domainDTO, id);
     }
 

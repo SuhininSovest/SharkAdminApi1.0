@@ -21,7 +21,7 @@ public class PrivilegeController {
     private final PrivilegeService privilegeService;
 
     //Get List with
-    @GetMapping("/get")
+    @GetMapping("/get/all")
     List<Privilege> all() {
         return privilegeService.readPrivilegeAll();
     }
@@ -47,7 +47,7 @@ public class PrivilegeController {
     //update
     @Transactional
     @PutMapping("/update/{id}")
-    public void update(@PathVariable PrivilegeDTO privilegeDTO, @PathVariable Long id){
+    public void update(@RequestBody PrivilegeDTO privilegeDTO, @PathVariable Long id){
         privilegeService.update(privilegeDTO, id);
     }
 }

@@ -20,7 +20,7 @@ public class UserController {
 
 
     //Get List with User
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     List<User> getAllUsers() {
         return userService.readUsersAll();
     }

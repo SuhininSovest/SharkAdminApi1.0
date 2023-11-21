@@ -20,7 +20,7 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     public List<Role> getAllRoles() {
         return roleService.readRoleAll();
     }
@@ -40,8 +40,8 @@ public class RoleController {
         roleService.delete(id);
     }
     @Transactional
-    @PutMapping("/update")
-    public void updateRole(@PathVariable RoleDTO roleDTO, Long id) {
+    @PutMapping("/update/{id}")
+    public void updateRole(@RequestBody RoleDTO roleDTO, @PathVariable Long id) {
         roleService.update(roleDTO, id);
     }
 
