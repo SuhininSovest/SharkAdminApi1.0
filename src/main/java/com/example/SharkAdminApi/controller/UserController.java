@@ -5,30 +5,48 @@ import com.example.SharkAdminApi.model.User;
 import com.example.SharkAdminApi.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @AllArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+    // Create user
+    @PostMapping(value = "/newUser/create/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String createNewUser(@ModelAttribute UserDTO userDto) {
+        userService.create(userDto); // Create the user in the service
+        return "redirect:/users"; // Redirect to the users list after successful creation
+    }
 
+    @GetMapping("/create")
+    public String userModel(@ModelAttribute("user") UserDTO userDto) {
+        return "CreateUser";
+    }
+    @GetMapping("/get/all")  // Map to the correct path for displaying users
+    public String showUserList(Model model) {
+        model.addAttribute("users", userService.readUsersAll());
+        // Add an empty User object for form binding
+        model.addAttribute("user", new User());
+        return "UserManagement";
+    }
 
     //Get List with User
-    @GetMapping("/get/all")
+    @GetMapping("/get/all1")
     List<User> getAllUsers() {
         return userService.readUsersAll();
     }
-    //Create user
-    @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody UserDTO dto) {
-        return new ResponseEntity<>(userService.create(dto), HttpStatus.CREATED);
-    }
+
     //update user by id
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {

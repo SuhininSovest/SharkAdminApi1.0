@@ -8,7 +8,6 @@ public class SharkAdminApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SharkAdminApiApplication.class, args);
-
 		System.out.println("Hallo World!");
 	}
 }
