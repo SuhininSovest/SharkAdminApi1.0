@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping(value = "/newUser/create/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String createNewUser(@ModelAttribute UserDTO userDto) {
         userService.create(userDto); // Create the user in the service
-        return "redirect:/users"; // Redirect to the users list after successful creation
+        return "redirect:/api/users/get/all"; // Redirect to the users list after successful creation
     }
 
     @GetMapping("/create")
@@ -42,10 +42,10 @@ public class UserController {
     }
 
     //Get List with User
-    @GetMapping("/get/all1")
-    List<User> getAllUsers() {
-        return userService.readUsersAll();
-    }
+//    @GetMapping("/get/all1")
+//    List<User> getAllUsers() {
+//        return userService.readUsersAll();
+//    }
 
     //update user by id
     @PutMapping("/update/{id}")
@@ -55,9 +55,15 @@ public class UserController {
     }
     //get User by id
     @GetMapping("/get/{userId}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Optional<User> getUser(@PathVariable Long userId) {
-        return userService.readUserById(userId);
+    public String getUserCard(@PathVariable Long userId, Model model) {
+        Optional<User> userOptional = userService.readUserById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            model.addAttribute("user", user);
+            return "UserCard";
+        } else {
+            return "redirect:/api/users/get/all";
+        }
     }
     //Delete user by id
     @DeleteMapping("/delete/{id}")
