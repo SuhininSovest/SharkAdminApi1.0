@@ -22,6 +22,14 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+
+    // update user by id
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
+        User updatedUser = userService.update(userDTO, id);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
     // Create user
     @PostMapping(value = "/newUser/create/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String createNewUser(@ModelAttribute UserDTO userDto) {
@@ -41,18 +49,6 @@ public class UserController {
         return "UserManagement";
     }
 
-    //Get List with User
-//    @GetMapping("/get/all1")
-//    List<User> getAllUsers() {
-//        return userService.readUsersAll();
-//    }
-
-    //update user by id
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
-        User updatedUser = userService.update(userDTO, id);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-    }
     //get User by id
     @GetMapping("/get/{userId}")
     public String getUserCard(@PathVariable Long userId, Model model) {

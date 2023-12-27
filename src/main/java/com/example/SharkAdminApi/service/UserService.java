@@ -21,6 +21,23 @@ public class UserService {
     private final UserRepository userRepository;
     public static final String CYRILLIC_TO_LATIN = "Cyrillic-Latin";
 
+    //update user
+    @Transactional
+    public User update(UserDTO userDTO, Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+
+        // Обновляем только указанные поля
+        user.setFullName(userDTO.getFullName());
+        user.setEmployeePosition(userDTO.getEmployeePosition());
+        user.setDepartment(userDTO.getDepartment());
+        user.setPhoneWork(userDTO.getPhoneWork());
+        user.setPhonePersonal(userDTO.getPhonePersonal());
+
+        // ID остается неизменным
+        return userRepository.save(user);
+    }
+
     //Get all users
     public List<User> readUsersAll() {
         return userRepository.findAll();
@@ -89,25 +106,6 @@ public class UserService {
         return result;
     }
 
-    //update user
-    @Transactional
-    public User update(UserDTO userDTO, Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
-
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setSurname(userDTO.getSurname());
-        user.setFullName(String.format("%s %s %s", userDTO.getFirstName(), userDTO.getLastName(), userDTO.getSurname()));
-        user.setFullNameForVideoMeeting(user.getFullName());
-        user.setEmployeePosition(userDTO.getEmployeePosition());
-        user.setDepartment(userDTO.getDepartment());
-        user.setMail(userDTO.getMail());
-        user.setPhoneWork(userDTO.getPhoneWork());
-        user.setPhonePersonal(userDTO.getPhonePersonal());
-
-        return userRepository.save(user);
-    }
     //delete user
     @Transactional
     public void delete(Long id) {
