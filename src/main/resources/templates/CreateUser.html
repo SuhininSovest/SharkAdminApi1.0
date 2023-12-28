@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create User</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header th:include="fragments/header" />
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 d-none d-md-block bg-light sticky-top">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/users/get/all">Users</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-10">
+      <h1 class="mt-4">Create User</h1>
+      <form th:action="@{/api/users/newUser/create/}" th:object="${user}" method="post">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+        </div>
+        <div class="mb-3">
+          <label for="surname" class="form-label">Surname</label>
+          <input type="text" class="form-control" id="surname" th:field="*{surname}">
+        </div>
+        <div class="mb-3">
+          <label for="employeePosition" class="form-label">Employee Position</label>
+          <input type="text" class="form-control" id="employeePosition" th:field="*{employeePosition}">
+        </div>
+        <div class="mb-3">
+          <label for="department" class="form-label">Department</label>
+          <input type="text" class="form-control" id="department" th:field="*{department}">
+        </div>
+        <div class="mb-3">
+          <label for="phoneWork" class="form-label">Work Phone</label>
+          <input type="tel" class="form-control" id="phoneWork" th:field="*{phoneWork}">
+        </div>
+        <div class="mb-3">
+          <label for="phonePersonal" class="form-label">Personal Phone</label>
+          <input type="tel" class="form-control" id="phonePersonal" th:field="*{phonePersonal}">
+        </div>
+        <button type="submit" class="btn btn-success">Create User</button>
+      </form>
+      <script>
+        function showSuccessMessage() {
+      // Show a success message
+      alert("User successfully created!");
+
+      // Redirect to the users list
+      window.location.href = "http://localhost:9090/api/users/get/all";
+    }
+
+    // Handle form submission
+    document.querySelector("form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Create the user
+      const userDto = {
+        firstName: document.querySelector("#firstName").value,
+        lastName: document.querySelector("#lastName").value,
+        surname: document.querySelector("#surname").value,
+        employeePosition: document.querySelector("#employeePosition").value,
+        department: document.querySelector("#department").value,
+        phoneWork: document.querySelector("#phoneWork").value,
+        phonePersonal: document.querySelector
+      </script>
+    </div>
+  </div>
+</div>
+<footer th:include="fragments/footer" />
+</body>
+</html>
