@@ -16,4 +16,5 @@ public class UserDTO {
     private String mail;
     private String phoneWork;
     private String phonePersonal;
+    private Boolean bloсking;
 }

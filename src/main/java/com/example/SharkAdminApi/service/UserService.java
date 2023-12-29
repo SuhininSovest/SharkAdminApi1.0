@@ -21,6 +21,24 @@ public class UserService {
     private final UserRepository userRepository;
     public static final String CYRILLIC_TO_LATIN = "Cyrillic-Latin";
 
+    //Get all users
+    public List<User> readUsersAll() {
+        return userRepository.findAll();
+    }
+    @Transactional
+    public void setBlockingById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+        user.setBloсking(true);  // Set blocking to true
+    }
+
+    @Transactional
+    public void setUnBlockingById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+        user.setBloсking(false);  // Set blocking to false
+    }
+
     //update user
     @Transactional
     public User update(UserDTO userDTO, Long id) {
@@ -38,10 +56,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    //Get all users
-    public List<User> readUsersAll() {
-        return userRepository.findAll();
-    }
     //get user by id
     public Optional<User> readUserById(Long userId) {
         return userRepository.findById(userId);

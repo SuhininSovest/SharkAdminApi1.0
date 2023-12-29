@@ -66,6 +66,8 @@
         </div>
         <button type="submit" class="btn btn-success">Update User</button>
         <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete User</button>
+        <button type="button" class="btn btn-warning" onclick="blockUser()">Block User</button>
+        <button type="button" class="btn btn-success" onclick="unBlockUser()">Unblock User</button>
 
       </form>
       <script>
@@ -130,6 +132,54 @@
       }
     });
   }
+
+  function blockUser() {
+  const userId = document.querySelector('input[name="userId"]').value;
+
+  fetch(`/api/users/block/${userId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      // Обработка успешного блокирования
+      showSuccessMessage();
+      // Перенаправление после успешного блокирования
+      window.location.href = "http://localhost:9090/api/users/get/all";
+    } else {
+      // Обработка ошибки
+      console.error("Ошибка блокирования:", response.statusText);
+    }
+  });
+}
+
+function blockUser() {
+      const userId = document.querySelector('input[name="userId"]').value;
+      fetch(`/api/users/get/${userId}/blocking`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        // Handle success or error as needed
+      });
+    }
+
+    function unBlockUser() {
+      const userId = document.querySelector('input[name="userId"]').value;
+      fetch(`/api/users/get/${userId}/unblocking`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        // Handle success or error as needed
+      });
+    }
       </script>
     </div>
   </div>

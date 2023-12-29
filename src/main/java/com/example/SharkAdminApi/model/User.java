@@ -48,5 +48,4 @@ public class User {
     private String phonePersonal;
     @Column(name="bloking")
     private boolean bloсking = false;
-
 }

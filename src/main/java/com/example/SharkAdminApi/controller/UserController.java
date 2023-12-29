@@ -23,6 +23,24 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/get/all")  // Map to the correct path for displaying users
+    public String showUserList(Model model) {
+        model.addAttribute("users", userService.readUsersAll());
+        // Add an empty User object for form binding
+        model.addAttribute("user", new User());
+        return "UserManagement";
+    }
+    @PutMapping("/get/{id}/blocking")
+    public ResponseEntity<Void> blockingUser(@PathVariable Long id) {
+        userService.setBlockingById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/get/{id}/unblocking")
+    public ResponseEntity<Void> unBlockingUser(@PathVariable Long id) {
+        userService.setUnBlockingById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
     // update user by id
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
@@ -40,13 +58,6 @@ public class UserController {
     @GetMapping("/create")
     public String userModel(@ModelAttribute("user") UserDTO userDto) {
         return "CreateUser";
-    }
-    @GetMapping("/get/all")  // Map to the correct path for displaying users
-    public String showUserList(Model model) {
-        model.addAttribute("users", userService.readUsersAll());
-        // Add an empty User object for form binding
-        model.addAttribute("user", new User());
-        return "UserManagement";
     }
 
     //get User by id
