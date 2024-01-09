@@ -29,14 +29,14 @@ public class UserService {
     public void setBlockingById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
-        user.setBloсking(true);  // Set blocking to true
+        user.setActive(false);  // Set blocking to true
     }
 
     @Transactional
     public void setUnBlockingById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
-        user.setBloсking(false);  // Set blocking to false
+        user.setActive(true);  // Set blocking to false
     }
 
     //update user
@@ -87,10 +87,39 @@ public class UserService {
                 .employeePosition(userDTO.getEmployeePosition())
                 .department(userDTO.getDepartment())
                 .mail(logonName + "@mail.com")                       //Затычка
-                .phoneWork(userDTO.getPhoneWork())
-                .phonePersonal(userDTO.getPhonePersonal())
+                .phoneWork(validatePhone(userDTO.getPhoneWork()))
+                .phonePersonal(validatePhone(userDTO.getPhonePersonal()))
+                .active(true)
                 .build());
     }
+    //Проверяем телефонный номер
+    public static String validatePhone(String text) {
+
+        String phoneWork = text;
+
+        // Удаляем все лишние символы
+        phoneWork = phoneWork.replaceAll("[^0-9]", "");
+
+        // Проверяем, что длина номера не меньше 10 цифр
+        if (phoneWork.length() < 10) {
+            throw new IllegalArgumentException("Рабочий телефон должен быть не менее 10 цифр");
+        }
+
+        // Проверяем, что добавочный номер (если есть) - это только цифры
+        if (phoneWork.contains(" ")) {
+            String[] parts = phoneWork.split(" ");
+            if (parts.length > 2) {
+                throw new IllegalArgumentException("Неверный формат рабочего телефона");
+            }
+
+            String addNumber = parts[1];
+            if (!addNumber.matches("[0-9]+")) {
+                throw new IllegalArgumentException("Добавочный номер должен состоять только из цифр");
+            }
+        }
+        return text;
+    }
+
     private boolean isLogonNameExists(String logonName) {
         // Проверяем, существует ли logonName в базе данных
         return userRepository.existsByLogonName(logonName);

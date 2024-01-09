@@ -46,6 +46,12 @@ public class User {
     private String phoneWork;
     @Column(name="phonePersonal")
     private String phonePersonal;
-    @Column(name="bloking")
-    private boolean bloсking = false;
+    @Column(name="active")
+    private boolean active;
+    @Column(name="password")
+    private String password;
+    @Column(name="rolesWebSecurity")
+    private String rolesWebSecurity;
+    @Column(name="user_roles")
+    private String roles;
 }

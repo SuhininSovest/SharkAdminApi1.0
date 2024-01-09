@@ -2,6 +2,8 @@ package com.example.SharkAdminApi.dto;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+
 @Data
 public class UserDTO {
     private Long userId;
@@ -16,5 +18,7 @@ public class UserDTO {
     private String mail;
     private String phoneWork;
     private String phonePersonal;
-    private Boolean bloсking;
+    private Boolean active;
+    private String password;
+    private String rolesWebSecurity;
 }
