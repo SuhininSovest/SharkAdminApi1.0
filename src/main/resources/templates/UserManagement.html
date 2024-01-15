@@ -16,15 +16,15 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/api/users/get/all">Users</a>
+                    <a class="nav-link" href="api/admin/users/get/all">Users</a>
                 </li>
             </ul>
         </div>
         <div class="col-md-10">
             <h1 class="mt-4">User Management</h1>
 
-            <a th:href="@{/api/users/update}" class="btn btn-sm btn-primary">Edit</a>
-            <a th:href="@{/api/users/create}" class="btn btn-sm btn-primary">Create</a>
+            <a th:href="@{/api/admin/users/update/}" class="btn btn-sm btn-primary">Edit</a>
+            <a th:href="@{/api/admin/users/create-new/}" class="btn btn-sm btn-primary">Create</a>
             <div class="list-container">
                 <table class="table table-success table-striped">
                     <thead>

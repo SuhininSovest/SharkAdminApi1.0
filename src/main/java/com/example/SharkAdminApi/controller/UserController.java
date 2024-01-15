@@ -18,46 +18,28 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/users/")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/get/all")  // Map to the correct path for displaying users
-    public String showUserList(Model model) {
-        model.addAttribute("users", userService.readUsersAll());
-        // Add an empty User object for form binding
-        model.addAttribute("user", new User());
-        return "UserManagement";
-    }
-    @PutMapping("/get/{id}/blocking")
-    public ResponseEntity<Void> blockingUser(@PathVariable Long id) {
-        userService.setBlockingById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 
-    @PutMapping("/get/{id}/unblocking")
-    public ResponseEntity<Void> unBlockingUser(@PathVariable Long id) {
-        userService.setUnBlockingById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
     // update user by id
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
-        User updatedUser = userService.update(userDTO, id);
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
+        User updatedUser = userService.update(userDTO, userId);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
+    // update user password by id
+    @PutMapping("/update/password/{userId}")
+    public ResponseEntity<User> updateUserPassword(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
+        if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Сообщаем о несовпадении паролей
+        }
 
-    // Create user
-    @PostMapping(value = "/newUser/create/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String createNewUser(@ModelAttribute UserDTO userDto) {
-        userService.create(userDto); // Create the user in the service
-        return "redirect:/api/users/get/all"; // Redirect to the users list after successful creation
-    }
-
-    @GetMapping("/create")
-    public String userModel(@ModelAttribute("user") UserDTO userDto) {
-        return "CreateUser";
+        // Обновляем пароль пользователя
+        User updatedUser = userService.updateUserPassword(userDTO, userId);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     //get User by id
@@ -69,14 +51,9 @@ public class UserController {
             model.addAttribute("user", user);
             return "UserCard";
         } else {
-            return "redirect:/api/users/get/all";
+            return "redirect:/";
         }
     }
-    //Delete user by id
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+
 }
 

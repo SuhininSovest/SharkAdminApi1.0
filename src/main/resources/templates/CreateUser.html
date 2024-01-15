@@ -22,7 +22,7 @@
     </div>
     <div class="col-md-10">
       <h1 class="mt-4">Create User</h1>
-      <form th:action="@{/api/users/newUser/create/}" th:object="${user}" method="post">
+      <form th:action="@{/api/admin/users/create-new}" th:object="${user}" method="post">
         <div class="mb-3">
           <label for="firstName" class="form-label">First Name</label>
           <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
@@ -59,7 +59,7 @@
       alert("User successfully created!");
 
       // Redirect to the users list
-      window.location.href = "http://localhost:9090/api/users/get/all";
+      window.location.href = "http://localhost:9090/api/admin/users/get/all";
     }
 
     // Handle form submission

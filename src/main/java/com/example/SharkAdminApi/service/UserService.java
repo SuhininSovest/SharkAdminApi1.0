@@ -21,6 +21,38 @@ public class UserService {
     private final UserRepository userRepository;
     public static final String CYRILLIC_TO_LATIN = "Cyrillic-Latin";
 
+    //Create password with Encoder
+    public String generatePassword() {
+        // Укажите желаемые параметры пароля (длина, используемые символы)
+        int length = 12;
+        String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{};':\"\\|,.<>/?";
+
+        // Сгенерируйте случайную строку пароля
+        char[] passwordChars = new char[length];
+        for (int i = 0; i < length; i++) {
+            int randomIndex = (int) (Math.random() * allowedChars.length());
+            passwordChars[i] = allowedChars.charAt(randomIndex);
+        }
+
+        return new String(passwordChars);
+    }
+
+    //Update password
+    @Transactional
+    public User updateUserPassword(UserDTO userDTO, Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+
+        // Обновляем только пароль и шифруем
+        user.setPassword(userDTO.getPassword());
+
+        // ID остается неизменным
+        return userRepository.save(user);
+    }
+
+    // Зашифруйте пароль
+    // String encodedPassword = passwordEncoder.encode(new String(passwordChars));
+
     //Get all users
     public List<User> readUsersAll() {
         return userRepository.findAll();
@@ -89,9 +121,12 @@ public class UserService {
                 .mail(logonName + "@mail.com")                       //Затычка
                 .phoneWork(validatePhone(userDTO.getPhoneWork()))
                 .phonePersonal(validatePhone(userDTO.getPhonePersonal()))
+                .password(generatePassword())
+                .roles("USER")
                 .active(true)
                 .build());
     }
+
     //Проверяем телефонный номер
     public static String validatePhone(String text) {
 
