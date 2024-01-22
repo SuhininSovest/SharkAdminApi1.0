@@ -30,16 +30,26 @@ public class UserController {
         User updatedUser = userService.update(userDTO, userId);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
+
     // update user password by id
     @PutMapping("/update/password/{userId}")
     public ResponseEntity<User> updateUserPassword(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
-        if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Сообщаем о несовпадении паролей
-        }
-
-        // Обновляем пароль пользователя
-        User updatedUser = userService.updateUserPassword(userDTO, userId);
+        User updatedUser = userService.update(userDTO, userId);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    //update user password by id
+    @GetMapping("/update/password/{userId}")
+    public ModelAndView getUpdateUserPasswordCard(@PathVariable Long userId) {
+        Optional<User> userOptional = userService.readUserById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            ModelAndView modelAndView = new ModelAndView("UpdateUserPassword");
+            modelAndView.addObject("user", user);
+            return modelAndView;
+        } else {
+            return new ModelAndView(new RedirectView("/"));
+        }
     }
 
     //get User by id

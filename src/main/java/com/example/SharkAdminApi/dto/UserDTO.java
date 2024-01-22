@@ -20,5 +20,6 @@ public class UserDTO {
     private String phonePersonal;
     private Boolean active;
     private String password;
+    private String RepeatPassword;
     private String rolesWebSecurity;
 }

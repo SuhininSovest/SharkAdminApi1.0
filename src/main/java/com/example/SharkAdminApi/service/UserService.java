@@ -36,46 +36,25 @@ public class UserService {
 
         return new String(passwordChars);
     }
-
-    //Update password
-    @Transactional
-    public User updateUserPassword(UserDTO userDTO, Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
-
-        // Обновляем только пароль и шифруем
-        user.setPassword(userDTO.getPassword());
-
-        // ID остается неизменным
-        return userRepository.save(user);
-    }
-
     // Зашифруйте пароль
     // String encodedPassword = passwordEncoder.encode(new String(passwordChars));
 
-    //Get all users
-    public List<User> readUsersAll() {
-        return userRepository.findAll();
-    }
+    //Update password
     @Transactional
-    public void setBlockingById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
-        user.setActive(false);  // Set blocking to true
-    }
+    public User updateUserPassword(UserDTO userDTO, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " does not exist."));
 
-    @Transactional
-    public void setUnBlockingById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
-        user.setActive(true);  // Set blocking to false
+        // Обновляем только пароль и шифруем
+        user.setPassword(userDTO.getPassword());
+        return userRepository.save(user);
     }
 
     //update user
     @Transactional
-    public User update(UserDTO userDTO, Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+    public User update(UserDTO userDTO, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " does not exist."));
 
         // Обновляем только указанные поля
         user.setFullName(userDTO.getFullName());
@@ -83,8 +62,8 @@ public class UserService {
         user.setDepartment(userDTO.getDepartment());
         user.setPhoneWork(userDTO.getPhoneWork());
         user.setPhonePersonal(userDTO.getPhonePersonal());
+        user.setPassword(userDTO.getPassword());
 
-        // ID остается неизменным
         return userRepository.save(user);
     }
 
@@ -92,6 +71,13 @@ public class UserService {
     public Optional<User> readUserById(Long userId) {
         return userRepository.findById(userId);
     }
+
+
+    //Get all users
+    public List<User> readUsersAll() {
+        return userRepository.findAll();
+    }
+
     //create user
     @Transactional
     public User create(UserDTO userDTO) {
@@ -182,6 +168,19 @@ public class UserService {
         result = result.replaceAll("[^a-zA-Z0-9.]", "");
 
         return result;
+    }
+    @Transactional
+    public void setBlockingById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+        user.setActive(false);  // Set blocking to true
+    }
+
+    @Transactional
+    public void setUnBlockingById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " does not exist."));
+        user.setActive(true);  // Set blocking to false
     }
 
     //delete user
